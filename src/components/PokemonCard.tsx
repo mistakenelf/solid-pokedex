@@ -29,11 +29,11 @@ export const PokemonCard: Component<PokemonCardProps> = (props) => {
       type="button"
       class="bg-pokemon-yellow rounded-lg shadow p-4 flex justify-center flex-col"
     >
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between overflow-x-auto">
         <div class="capitalize">{props.name}</div>
         <div>{props.hp} HP</div>
       </div>
-      <img src={currentSprite()} alt={props.name} />
+      <img src={currentSprite()} alt={props.name} width="100%" height="200px" />
     </button>
   );
 };
