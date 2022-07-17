@@ -10,7 +10,7 @@ import { NoResults } from "../../components/NoResults";
 
 import { PokemonListing } from "./components/PokemonListing";
 
-const Pokedex: Component = () => {
+export const Pokedex: Component = () => {
   const pokemon = useRouteData<() => Pokemon>();
   const [pokemonData, setPokemonData] = createSignal<Pokemon>();
   const [loadingMore, setLoadingMore] = createSignal(false);
@@ -56,5 +56,3 @@ const Pokedex: Component = () => {
     </div>
   );
 };
-
-export default Pokedex;
