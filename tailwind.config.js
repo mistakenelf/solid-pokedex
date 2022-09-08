@@ -9,6 +9,7 @@ module.exports = {
       colors: {
         "pokemon-yellow": "#ffcb05",
         "pokemon-red": "#CC0000",
+        "pokemon-blue": "#2a75bb",
       },
     },
   },

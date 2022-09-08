@@ -1,4 +1,4 @@
-import { Component } from "solid-js";
+import type { Component } from "solid-js";
 import { For } from "solid-js";
 
 import { PokemonCard } from "../../../../components/PokemonCard";
@@ -16,6 +16,8 @@ export const PokemonListing: Component<PokemonListingProps> = (props) => {
           <PokemonCard
             frontSprite={poke.sprites.front_default}
             backSprite={poke.sprites.back_default}
+            frontShiny={poke.sprites.front_shiny}
+            backShiny={poke.sprites.back_shiny}
             name={poke.name}
             hp={poke.stats[0].base_stat}
           />

@@ -1,8 +1,6 @@
 import type { Component } from "solid-js";
-import { useRouteData } from "solid-app-router";
-import { Show, createEffect, createSignal } from "solid-js";
+import { Show, createSignal, createResource } from "solid-js";
 
-import { Pokemon } from "../../models/Pokemon";
 import { Button } from "../../components/Button";
 import { Spinner } from "../../components/Spinner";
 import pokemonApi from "../../lib/pokemonApi";
@@ -11,25 +9,18 @@ import { NoResults } from "../../components/NoResults";
 import { PokemonListing } from "./components/PokemonListing";
 
 export const Pokedex: Component = () => {
-  const pokemon = useRouteData<() => Pokemon>();
-  const [pokemonData, setPokemonData] = createSignal<Pokemon>();
+  const [pokemon, { mutate }] = createResource(() => pokemonApi.getPokemon());
   const [loadingMore, setLoadingMore] = createSignal(false);
-
-  createEffect(() => {
-    if (pokemon()) {
-      setPokemonData(pokemon());
-    }
-  });
 
   const loadMore = async () => {
     setLoadingMore(true);
 
     try {
-      const newPokemon = await pokemonApi.getPokemon(pokemonData().next);
-      setPokemonData((oldPokemon) => ({
+      const newPokemon = await pokemonApi.getPokemon(pokemon().next);
+      mutate({
         ...newPokemon,
-        results: [...oldPokemon.results, ...newPokemon.results],
-      }));
+        results: [...pokemon().results, ...newPokemon.results],
+      });
       setLoadingMore(false);
     } catch (e) {
       setLoadingMore(false);
@@ -39,13 +30,13 @@ export const Pokedex: Component = () => {
 
   return (
     <div class="p-6 flex flex-col">
-      <Show when={pokemonData()} fallback={<Spinner isOverlay />}>
-        <Show when={pokemonData().results.length > 0} fallback={<NoResults />}>
-          <PokemonListing pokemon={pokemonData()} />
+      <Show when={!pokemon.loading} fallback={<Spinner isOverlay />}>
+        <Show when={pokemon().results.length > 0} fallback={<NoResults />}>
+          <PokemonListing pokemon={pokemon()} />
           <div class="pt-6 flex flex-col self-center">
             <div class="mb-4">
-              Currently displaying {pokemonData().results.length} of{" "}
-              {pokemonData().count}
+              Currently displaying {pokemon().results.length} of{" "}
+              {pokemon().count}
             </div>
             <Button onClick={loadMore} loading={loadingMore()}>
               Load More

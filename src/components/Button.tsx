@@ -11,7 +11,7 @@ export const Button: ParentComponent<ButtonProps> = (props) => {
   return (
     <button
       {...other}
-      class="bg-pokemon-red text-white px-4 py-2 rounded border-4 border-black"
+      class="bg-pokemon-red hover:opacity-90 text-white px-4 py-2 rounded border-4 border-black"
     >
       <Show when={!local.loading} fallback={<div>Loading...</div>}>
         {other.children}
